@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::get('/', function () {
 });
 
 Route::get('/folders/{id}/tasks', [TaskController::class, 'index'])->name('tasks.index');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
