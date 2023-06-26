@@ -7,16 +7,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Folder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Mail\ResetPassword;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use HasFactory;
 
     public function folders()
     {
-        return $this->hasMany('App\Models\Folder');
+        return $this->hasMany(Folder::class);
+        // =   $this->hasMany('App\Task', 'folder_id', 'id');
     }
+    
+    public function sendPasswordResetNotification($token){
+        Mail::to($this)->send(new ResetPassword($token));
+    }
+    
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
