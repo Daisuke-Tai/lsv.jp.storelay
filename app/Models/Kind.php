@@ -4,21 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Task;
-use App\Models\user;
+use App\Models\Book;
+use App\Models\User;
 
-class Folder extends Model
+class Kind extends Model
 {
     
     public function user()
 	{
 		return $this->belongsTo(User::class);
 	}
-
+    
     use HasFactory;
 
-    public function tasks(){
-        return $this->hasMany(Task::class);
-        // =   $this->hasMany('App\Task', 'folder_id', 'id');
+    public function books(){
+        return $this->hasMany(Book::class);
+        // =   $this->hasMany('App\book', 'kind_id', 'id');
     }
 }

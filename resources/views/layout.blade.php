@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>ToDo App</title>
   @yield('styles')
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="{{asset('/assets/css/styles.css')}}">
 </head>
 <body>
 <header>

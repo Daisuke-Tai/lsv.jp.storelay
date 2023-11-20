@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateFolder extends FormRequest
+class CreateKind extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,13 @@ class CreateFolder extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:20',
+            'name' => 'required|max:20',
         ];
     }
 
     public function attributes(){
         return [
-            'title' => 'フォルダ名',
+            'name' => 'ジャンル名',
         ];
     }
 }

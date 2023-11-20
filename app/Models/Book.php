@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Task extends Model
+class Book extends Model
 {
+
+    protected $table = 'Books';
+
 //    use HasFactory;
     const STATUS = [
         1 => ['label' => '未着手', 'class' => 'label-danger'],
@@ -17,29 +20,31 @@ class Task extends Model
 
     public function getStatusLabelAttribute(){
         // 状態値
-        $status = $this->attributes['status'];
+        $status = $this->attributes['del_f'];
         // 定義されていなければ空文字を返す
         if(!isset(self::STATUS[$status])){
-            return '';
+            return 9;
         }
 
-        return self::STATUS[$status]['label'];
+        return self::STATUS[$status]['del_f'];
     }
 
     //  状態を表すHTMLクラス @return string
     public function getStatusClassAttribute(){
         // 状態値
-        $status = $this->attributes['status'];
+        $status = $this->attributes['del_f'];
         // 定義されていなければ空文字を返す
         if(!isset(self::STATUS[$status])){
-            return '';
+            return 'AA';
         }
 
         return self::STATUS[$status]['class'];
     }
 
     // 整形した期限日 @return string
-    public function getFormattedDueDateAttribute(){
-        return Carbon::createFromFormat('Y-m-d', $this->attributes['due_date'])->format('Y/m/d');
+    public function getFormattedcreated_atAttribute(){
+//        return Carbon::createFromFormat('Y-m-d', $this->attributes['due_date'])->format('Y/m/d');
+        return Carbon::createFromFormat('Y-m-d', $this->attributes['created_at'])->format('Y/m/d');
+    
     }
 }

@@ -5,20 +5,21 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Carbon\carbon;
 
-class FolderTableSeeder extends Seeder
+class PostsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $titles = ['プライベート', '仕事', '旅行'];
-
-        foreach ($titles as $title){
-            DB::table('folders')->insert([
-                'title' => $title,
+        foreach(range(1,3) as $num){
+            DB::table('posts')->insert([
+                'kind_id' => 1,
+                'title' => "サンプルタスク {$num}",
+                'status' => $num,
+                'due_date' => Carbon::now()->addDay($num),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Folder;
+use App\Models\Kind;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Mail;
@@ -16,10 +16,10 @@ class User extends Authenticatable
 {
     use HasFactory;
 
-    public function folders()
+    public function kinds()
     {
-        return $this->hasMany(Folder::class);
-        // =   $this->hasMany('App\Task', 'folder_id', 'id');
+        return $this->hasMany(kind::class);
+        // =   $this->hasMany('App\Book', 'kind_id', 'id');
     }
     
     public function sendPasswordResetNotification($token){

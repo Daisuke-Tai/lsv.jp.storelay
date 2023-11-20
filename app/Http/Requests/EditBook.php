@@ -3,10 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Task;
+use App\Models\Book;
 use Illuminate\Validation\Rule;
 
-class EditTask extends FormRequest
+class EditBook extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class EditTask extends FormRequest
     {
         $rule = parent::rules();
 
-        $status_rule = Rule::in(array_keys(Task::STATUS));
+        $status_rule = Rule::in(array_keys(Book::STATUS));
 
         return $rule + [
             'status' => 'required|' . $status_rule,
@@ -45,7 +45,7 @@ class EditTask extends FormRequest
 
         $status_labels = array_map(function($item){
             return $item['label'];
-        }, Task::STATUS);
+        }, Book::STATUS);
 
         $status_labels = implode('、', $status_labels);
 

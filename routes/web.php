@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\FolderController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\KindController;
 use App\Http\Controllers\HomeController;
 
 use Illuminate\Support\Facades\Route;
@@ -32,16 +32,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get( '/folders/create', [FolderController::class, 'showCreateForm'])->name('folders.create');
-    Route::post('/folders/create', [FolderController::class, 'create']);
+    Route::get( '/kinds/create', [KindController::class, 'showCreateForm'])->name('kinds.create');
+    Route::post('/kinds/create', [KindController::class, 'create']);
 
-    Route::get('/folders/{id}/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('/kinds={kind_id}/books', [BookController::class, 'index'])->name('books.index');
 
-    Route::get( '/folders/{id}/tasks/create', [TaskController::class, 'showCreateForm'])->name('tasks.create');
-    Route::post('/folders/{id}/tasks/create', [TaskController::class, 'create']);
+    Route::get( '/kinds={kind_id}/books/create', [BookController::class, 'showCreateForm'])->name('books.create');
+    Route::post('/kinds={kind_id}/books/create', [BookController::class, 'create']);
 
-    Route::get( '/folders/{id}/tasks/{task_id}/edit', [TaskController::class, 'showEditForm'])->name('tasks.edit');
-    Route::post('/folders/{id}/tasks/{task_id}/edit', [TaskController::class, 'edit']);
+    Route::get( '/relay={id}', [BookController::class, 'showRelayForm'])->name('books.relay');
+    Route::post('/relay={id}', [BookController::class, 'relay']);
+
+    Route::get( '/kinds={kind_id}/books={book_id}/edit', [BookController::class, 'showEditForm'])->name('books.edit');
+    Route::post('/kinds={kind_id}/books={book_id}/edit', [BookController::class, 'edit']);
 
     Route::get( '/', [HomeController::class, 'index'])->name('home');
 });

@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('kinds', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('folder_id')->unsigned();
-            $table->string('title', 100);
-            $table->date('due_date');
-            $table->integer('status')->default(1);
+            $table->string('name', 20);
             $table->timestamps();
-
-            // 外部キーを設定する
-            $table->foreign('folder_id')->references('id')->on('folders');
         });
     }
 
@@ -29,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('kinds');
     }
 };

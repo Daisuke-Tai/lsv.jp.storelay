@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('folders', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            // 外部キーを設定する
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::create('sequences', function (Blueprint $table) {
+            $table->primary('key');
+            $table->string('key', 64);
+            $table->integer('sequence')->unsigned();
         });
     }
 
@@ -23,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('folders', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-        });
+        Schema::dropIfExists('sequences');
     }
 };

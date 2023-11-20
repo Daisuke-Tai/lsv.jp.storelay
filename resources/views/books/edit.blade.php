@@ -18,22 +18,22 @@
               </div>
             @endif
             <form
-                action="{{ route('tasks.edit', ['id' => $task->folder_id, 'task_id' => $task->id]) }}"
+                action="{{ route('books.edit', ['kind_id' => $book->kind_id, 'book_id' => $book->id]) }}"
                 method="POST"
             >
               @csrf
               <div class="form-group">
                 <label for="title">タイトル</label>
                 <input type="text" class="form-control" name="title" id="title"
-                       value="{{ old('title') ?? $task->title }}" />
+                       value="{{ old('title') ?? $book->title }}" />
               </div>
               <div class="form-group">
                 <label for="status">状態</label>
                 <select name="status" id="status" class="form-control">
-                  @foreach(\App\Task::STATUS as $key => $val)
+                  @foreach(\App\Book::STATUS as $key => $val)
                     <option
                         value="{{ $key }}"
-                        {{ $key == old('status', $task->status) ? 'selected' : '' }}
+                        {{ $key == old('status', $book->status) ? 'selected' : '' }}
                     >
                       {{ $val['label'] }}
                     </option>
@@ -43,7 +43,7 @@
               <div class="form-group">
                 <label for="due_date">期限</label>
                 <input type="text" class="form-control" name="due_date" id="due_date"
-                       value="{{ old('due_date') ?? $task->formatted_due_date }}" />
+                       value="{{ old('due_date') ?? $book->formatted_due_date }}" />
               </div>
               <div class="text-right">
                 <button type="submit" class="btn btn-primary">送信</button>
