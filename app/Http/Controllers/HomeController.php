@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 USE Illuminate\Support\Facades\Auth;
-use App\Models\kind;
+use App\Models\Kind;
 
 class HomeController extends Controller
 {
     public function index(){
  //       return view('home');
 
-//        $user = Auth::user();
+        $user = Auth::user();
 
         // ログインユーザーに基づくフォルダを一つ取得
 //        $kind = $user->kinds()->first();

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class Book extends Model
 {
 
-    protected $table = 'Books';
+    protected $table = 'books';
 
 //    use HasFactory;
     const STATUS = [

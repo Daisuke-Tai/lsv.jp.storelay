@@ -17,7 +17,7 @@ class KindController extends Controller
     public function create(CreateKind $request){
          
         // フォルダモデルのインスタンスを作成
-        $kind = new kind;
+        $kind = new Kind;
         // タイトルに入力値を代入する
         $kind->name = $request->name;
         // ユーザー取得

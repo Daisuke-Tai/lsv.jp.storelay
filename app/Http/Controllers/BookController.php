@@ -11,6 +11,7 @@ use App\Http\Requests\CreateBook;
 use App\Http\Requests\EditBook;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class BookController extends Controller
 {
@@ -21,10 +22,10 @@ class BookController extends Controller
     public function index(int $kind_id){
        
 //         kindモデルのallクラスメソッドですべて取得
-        $kinds = kind::all();
+        $kinds = Kind::all();
 
         // 選択されたフォルダを取得
-        $current_kind = kind::find($kind_id);
+        $current_kind = Kind::find($kind_id);
 
         // 選択されたフォルダに紐づくタスクを取得
         $books = Book::where('kind_id', $current_kind->id)->latest('id')->get();
@@ -35,11 +36,15 @@ class BookController extends Controller
 //        $books = DB::table('books')->orderBy('id', 'desc')->get();
 
         // 'kinds'がキー、$kindsが代入値
-        return view('books/index', [
+//        return Inertia::render('Dashboard');
+        
+        return Inertia::render('Books/Index', [
+ //       return view('books/index', [
             'kinds' => $kinds,
-            'current_kind_id' => $current_kind,
+            'current_kind_id' => $current_kind->id,
             'books' => $books,
         ]);
+        
     }
 
     // タイトル作成画面表示(use CreateBookは必要ない)
@@ -52,7 +57,7 @@ class BookController extends Controller
     // 作成（use CreateBookが必要。requestのため）
     public function create(int $kind_id, CreateBook $request){
 
-        $current_kind = kind::find($kind_id);        
+        $current_kind = Kind::find($kind_id);        
         $kind_name = 'book_id(' .$current_kind->name .')';
         
         
@@ -196,7 +201,7 @@ class BookController extends Controller
         // 1 select
         $book1 = DB::table('books')->find($id);
 
-        $current_kind = kind::find($book1->kind_id);        
+        $current_kind = Kind::find($book1->kind_id);        
         $kind_name = 'post_id(' .$current_kind->name .')';
 
         try{

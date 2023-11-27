@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Mail;
 class User extends Authenticatable
 {
     use HasFactory;
-
+/*
     public function kinds()
     {
-        return $this->hasMany(kind::class);
+        return $this->hasMany(Kind::class);
         // =   $this->hasMany('App\Book', 'kind_id', 'id');
     }
-    
+*/    
     public function sendPasswordResetNotification($token){
         Mail::to($this)->send(new ResetPassword($token));
     }
