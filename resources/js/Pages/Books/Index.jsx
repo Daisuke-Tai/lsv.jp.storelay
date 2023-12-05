@@ -3,11 +3,48 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import InputModal from '@/Components/InputModal';
 import Tuzuki from '@/Components/Tuzuki';
+import React from 'react';
 
 export default function Index({ auth,kinds,current_kind_id,books }) {
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
-    const [show3, setShow3] = useState(false);
+    const [show3, setShow3] = useState(0);
+    const [atag, setAtag] = useState(false);
+    
+    const like = (id) => {
+      
+      // laravelのエンドポイント
+      const apiUrl = 'http://localhost/lsv.jp.storelay/public/index.php/like/' + id;
+      const token = document.head.querySelector('meta[name="csrf-token"]').content;
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': token,
+        },
+        body: JSON.stringify({id:id}),
+      };
+      console.log(requestOptions);
+      
+      // Postリクエストを送信
+
+      var responseClone; 
+
+      fetch(apiUrl, requestOptions)
+
+      .then(function(response) {
+        responseClone = response.clone();
+        return response.text();
+      })
+//      .then((response) => response.json())
+      .then(data => {
+        console.log('送信！', data);
+      })
+      .catch(error => {
+        console.log('エラー！', error);
+      });
+    }
     
     return (
 
@@ -56,28 +93,25 @@ export default function Index({ auth,kinds,current_kind_id,books }) {
 
                       {books.map((book) => (
 
-                        <div key={book.id} className="relative -mt-px mx-1 px-1 border-collapse border hover:bg-violet-200 focus:bg-violet-200">
-                          <a href={ route('books.index2', {'id': book.id})} className="flex w-full h-full">
-                            <tbody >
-                              <tr>
-                                <td className="whitespace-pre-line">                                     
-                                  <Tuzuki value={ book.story } />
-                                </td>
-                              </tr>
-                              <tr>  
-                                <td> 
+                        <div key={book.id} className="relative -mt-px mx-1 px-1 border hover:bg-violet-200 focus:bg-violet-200">
+                          <a href={ route('books.index2', {'id': book.id})} className="flex w-full h-full items-center content-center">
+
+                            <div className="whitespace-pre-line">                                     
+                              <Tuzuki value={ book.story } /><br/>
+                            </div>
+                          </a> 
       
-                                  <input id="b_relay"  type="checkbox" className="hidden"></input> 
-                                  <label for="b_relay" onClick={() => setShow3(true)} className=" z-1 px-2 mb-1 rounded border border-current text-sm font-medium text-indigo-600 hover:scale-150 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">リレー</label>                                  
-                                  <InputModal type={3} show={show3} setShow={setShow3} id={book.id}/>  
-{/*                                   
-                                  <button  className="z-1 inline-block rounded border border-current px-2 text-sm font-medium text-indigo-600 transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-indigo-500">relay</button>
-                                  <InputModal type={3} show={show3} setShow={setShow3} id={book.id}/>    
-*/} 
-                                </td>
-                              </tr>
-                            </tbody>
-                            </a>        
+                          <div className="grid gap-4 grid-cols-3 absolute bottom-0">
+
+                            <input id="b_relay"  type="checkbox" className="hidden"></input> 
+                            <label for="b_relay" onClick={() => { setShow3(book.id); setAtag(true);}} className="mb-1 rounded border border-current text-sm font-medium text-indigo-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">relay{book.id}</label>                                  
+                            { (show3 == book.id) &&
+                              <InputModal type={3} show={show3} setShow={setShow3} setAtag={setAtag} id={book.id}/>  }
+                           
+                            <input id="b_like"  type="checkbox" className="hidden"></input> 
+                            <label for="b_like" onClick= {() => like(book.id)} className="mb-1 rounded border border-current text-sm font-medium text-green-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">いいね</label>
+
+                          </div>                       
                         </div>
                       ))}
                       

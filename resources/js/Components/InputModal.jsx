@@ -16,7 +16,19 @@ export default function InputModal(props) {
   }, []);
 
   const closeModal = () => {
-    props.setShow(false);
+    
+    switch(props.type){
+      case 1 : // ジャンル作成
+        props.setShow(false);
+        break;
+      case 2 : // ブック作成
+        props.setShow(false);
+        break;
+      case 3 : // リレー
+        props.setAtag(false);  
+        props.setShow(0);
+        break;    
+    };
   };
 
   const submit = (e) => {
@@ -25,10 +37,13 @@ export default function InputModal(props) {
       switch(props.type){
         case 1 : // ジャンル作成
           post(route('kinds.create'));
+          break;
         case 2 : // ブック作成
           post(route('books.create',{'kind_id': props.kind_id}));
+          break;
         case 3 : // リレー
           post(route('books.relay', {'id': props.id}));
+          break;
       };  
 
       closeModal();
