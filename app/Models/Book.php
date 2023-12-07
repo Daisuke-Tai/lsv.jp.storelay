@@ -5,11 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Like;
 
 class Book extends Model
 {
 
     protected $table = 'books';
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 
 //    use HasFactory;
     const STATUS = [

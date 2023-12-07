@@ -26,34 +26,34 @@ class User extends Authenticatable
     //多対多のリレーションを書く
     public function likes(): BelongsToMany
     {
-       return $this->belongsToMany(Book::class,'likes','user_id','post_id')->withTimestamps();
+       return $this->belongsToMany(Book::class,'likes','user_id','book_id')->withTimestamps();
 
     }
 
     //この投稿に対して既にlikeしたかどうかを判別する
-    public function isLike($postId)
+    public function isLike($bookId)
     {
-        return $this->likes()->wherePivot('post_id',$postId)->exists();
+        return $this->likes()->wherePivot('book_id',$bookId)->exists();
     }
 
     //isLikeを使って、既にlikeしたか確認したあと、いいねする（重複させない）
-    public function like($postId)
+    public function like($bookId)
     {
-    if($this->isLike($postId)){
+    if($this->isLike($bookId)){
         //もし既に「いいね」していたら何もしない
         $test = 1;
     } else {
-        $this->likes()->attach($postId);
+        $this->likes()->attach($bookId);
         $test = 2;
     }
     }
 
     //isLikeを使って、既にlikeしたか確認して、もししていたら解除する
-    public function unlike($postId)
+    public function unlike($bookId)
     {
-    if($this->isLike($postId)){
+    if($this->isLike($bookId)){
         //もし既に「いいね」していたら消す
-        $this->likes()->detach($postId);
+        $this->likes()->detach($bookId);
     } else {
     }
     }

@@ -104,14 +104,13 @@ export default function Index({ auth,kinds,current_kind_id,books }) {
                           <div className="grid gap-4 grid-cols-3 absolute bottom-0">
 
                             <input id="b_relay"  type="checkbox" className="hidden"></input> 
-                            <label for="b_relay" onClick={() => { setShow3(book.id); setAtag(true);}} className="mb-1 rounded border border-current text-sm font-medium text-indigo-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">relay{book.id}</label>                                  
+                            <label for="b_relay" onClick={() => { setShow3(book.id); setAtag(true);}} className="mb-1 px-2 rounded border border-current text-sm font-medium text-indigo-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">{book.user_id}:relay:{book.id}</label>                                  
                             { (show3 == book.id) &&
                               <InputModal type={3} show={show3} setShow={setShow3} setAtag={setAtag} id={book.id}/>  }
                            
                             <input id="b_like"  type="checkbox" className="hidden"></input> 
-                            <label for="b_like" onClick= {() => like(book.id)} className="mb-1 rounded border border-current text-sm font-medium text-green-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">いいね</label>
-
-                          </div>                       
+                            <label for="b_like" onClick= {() => like(book.id)} className="mb-1 px-2 rounded border border-current text-sm font-medium text-green-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">いいね:{book.likes_count}</label>
+                         </div>                       
                         </div>
                       ))}
                       

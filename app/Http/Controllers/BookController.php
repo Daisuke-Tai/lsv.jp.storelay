@@ -28,7 +28,8 @@ class BookController extends Controller
         $current_kind = Kind::find($kind_id);
 
         // 選択されたフォルダに紐づくタスクを取得
-        $books = Book::where('kind_id', $current_kind->id)->latest('id')->get();
+        $books = Book::withCount('likes')
+                     ->where('kind_id', $current_kind->id)->latest('id')->get();
 
         // クエリビルダで取得するとModelが意味をなさなくなり
         // view側のカラムに変なカラム名があるとエラーになる。
@@ -46,6 +47,7 @@ class BookController extends Controller
         ]);
         
     }
+
     public function index2(int $id){
        
 //         kindモデルのallクラスメソッドですべて取得
@@ -56,7 +58,7 @@ class BookController extends Controller
 
         // 選択されたフォルダに紐づくタスクを取得
         $books = Book::where('kind_id', $current_kind->kind_id)
-                     ->where('book_id', $current_kind->book_id)
+                     ->where('tema_id', $current_kind->tema_id)
                      ->where('page_no', $current_kind->page_no+1)
                      ->orwhere('id', $current_kind->id)
                      ->latest('id')->get();
@@ -81,7 +83,7 @@ class BookController extends Controller
     public function create(int $kind_id, CreateBook $request){
 
         $current_kind = Kind::find($kind_id);        
-        $kind_name = 'book_id(' .$current_kind->name .')';
+        $kind_name = 'tema_id(' .$current_kind->name .')';
         
         
         try{
@@ -93,7 +95,7 @@ class BookController extends Controller
             $book2 = new Book();
             $params = [
                 'kind_id' => $kind_id,
-                'book_id' => $num,
+                'tema_id' => $num,
                 'page_no' => 1, 
                 'post_id' => 1 ,
                 'story' => $request->story,
@@ -118,7 +120,7 @@ class BookController extends Controller
                    ->toSql();
 
         $book = new Book();
-        $book->book_id = 1;
+        $book->tema_id = 1;
         $book->page_no = 0;
         $book->post_id = 0;
         $book->kind_id = $id;
@@ -143,14 +145,14 @@ class BookController extends Controller
 /* SQL1 かんせい */
 /*
         $sql = DB::table('books')->select(
-            'book_id', 'page_no', 'post_id' , 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
+            'tema_id', 'page_no', 'post_id' , 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
         )
         ->where([
-            ['book_id', '=', ':book_id'],
+            ['tema_id', '=', ':tema_id'],
             ['page_no', '=', ':page_no'],
         ] )
         ->setBindings([
-            [':book_id' => '1'],
+            [':tema_id' => '1'],
             [':page_no' => '2'],
         ])
         ->latest('post_id')
@@ -158,8 +160,8 @@ class BookController extends Controller
 
 
         $params = ['story' => $request->story, 'user_id' => $user->id, 'id' => 6];
-        DB::insert('INSERT INTO books(book_id, page_no, post_id , story, kind_id, root, user_id, del_f, created_at, updated_at) 
-                    SELECT  book_id, 
+        DB::insert('INSERT INTO books(tema_id, page_no, post_id , story, kind_id, root, user_id, del_f, created_at, updated_at) 
+                    SELECT  tema_id, 
                             page_no + 1, 
                             post_id + 1 , 
                             :story, 
@@ -170,19 +172,19 @@ class BookController extends Controller
                             NOW(), 
                             NOW()  
                     FROM books
-                    WHERE book_id = :book_id 
+                    WHERE tema_id = :tema_id 
                     AND   page_no = :page_no '
                     , $params);
 
         $sql = DB::table('books')->select(
-            'book_id', 'page_no', 'post_id'+1 , 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
+            'tema_id', 'page_no', 'post_id'+1 , 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
         )
         ->where([
-            ['book_id', '=', ':book_id'],
+            ['tema_id', '=', ':tema_id'],
             ['page_no', '=', ':page_no'],
         ] )
         ->setBindings([
-            [':book_id' => '1'],
+            [':tema_id' => '1'],
             [':page_no' => '2'],
         ])
         ->latest('post_id')
@@ -190,16 +192,16 @@ class BookController extends Controller
 */
 /*
         DB::table('books')->insertUsing([
-            'book_id', 'page_no', 'post_id', 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
+            'tema_id', 'page_no', 'post_id', 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
         ], DB::table('books')->select(
-            'book_id', 'page_no', 'post_id', 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
+            'tema_id', 'page_no', 'post_id', 'story', 'kind_id', 'root', 'user_id', 'del_f', 'created_at', 'updated_at'
         )
         ->where([
-            ['book_id', '=', ':book_id'],
+            ['tema_id', '=', ':tema_id'],
             ['page_no', '=', ':page_no'],
         ] )
         ->setBindings([
-            [':book_id' => '1'],
+            [':tema_id' => '1'],
             [':page_no' => '2'],
         ]));
  */
@@ -214,7 +216,7 @@ class BookController extends Controller
     public function showRelayForm(int $id){
         return view('books/relay', [
             'id' => $id,
-            //'book_id' => $book_id,
+            //'tema_id' => $tema_id,
             // 'book' => $book,*/
         ]);
     }
@@ -231,12 +233,12 @@ class BookController extends Controller
             DB::beginTransaction();
     
             // 2 採番
-            $num = Sequence::getNewNo($kind_name, $book1->book_id, $book1->page_no+1);
+            $num = Sequence::getNewNo($kind_name, $book1->tema_id, $book1->page_no+1);
 
             // 3 insert
             $book2 = new Book();
             $params = [
-                'book_id' => $book1->book_id,
+                'tema_id' => $book1->tema_id,
                 'page_no' => $book1->page_no+1, 
                 'post_id' => $num ,
                 'story' => $request->story,
@@ -267,9 +269,9 @@ class BookController extends Controller
         ]);
     }
 
-    public function edit(int $kind_id, int $book_id, EditBook $request){
+    public function edit(int $kind_id, int $tema_id, EditBook $request){
         // 1
-        $book = Book::find($book_id);
+        $book = Book::find($tema_id);
         // 2
         $book->title = $request->title;
         $book->status = $request->status;

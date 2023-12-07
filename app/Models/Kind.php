@@ -9,12 +9,12 @@ use App\Models\User;
 
 class Kind extends Model
 {
-    
+/*    
     public function user()
 	{
 		return $this->belongsTo(User::class);
 	}
-    
+*/    
     use HasFactory;
 
     public function books(){

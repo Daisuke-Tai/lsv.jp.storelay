@@ -51,11 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::get( '/relay={id}', [BookController::class, 'showRelayForm'])->name('books.relay');
     Route::post('/relay={id}', [BookController::class, 'relay']);
 
-    Route::get( '/kinds={kind_id}/books={book_id}/edit', [BookController::class, 'showEditForm'])->name('books.edit');
-    Route::post('/kinds={kind_id}/books={book_id}/edit', [BookController::class, 'edit']);
+    Route::get( '/kinds={kind_id}/books={tema_id}/edit', [BookController::class, 'showEditForm'])->name('books.edit');
+    Route::post('/kinds={kind_id}/books={tema_id}/edit', [BookController::class, 'edit']);
 
     Route::post('/like/{id}',[LikeController::class,'store']);
-    Route::post('/unlike/{id}',[LikeController::class,'destroy'])->name('unlike');
+    Route::post('/unlike/{id}',[LikeController::class,'destroy']);
 
     Route::get( '/home', [HomeController::class, 'index'])->name('home');
 });
