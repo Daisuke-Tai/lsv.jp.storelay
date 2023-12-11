@@ -9,14 +9,25 @@ class LikeController extends Controller
 {
     public function store($bookId)
     {
-        Auth::user()->like($bookId);
-        return 'ok!'; //レスポンス内容
-//        return response()->json(['message' => 'like ok', 'book_id' => $bookId]);
+        
+        $result =  (Auth::user()->like($bookId));
+        if($result){
+            return response()->json(['result' => '1']);
+        } else {
+            return response()->json(['result' => '-1']);
+        };
+
     }
 
-    public function destroy($bookId)
+    public function store2($bookId)
     {
-        Auth::user()->unlike($bookId);
-        return 'ok!'; //レスポンス内容
+        
+        $result =  (Auth::user()->hate($bookId));
+        if($result){
+            return response()->json(['result' => '1']);
+        } else {
+            return response()->json(['result' => '-1']);
+        };
+
     }
 }

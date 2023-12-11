@@ -26,36 +26,52 @@ class User extends Authenticatable
     //多対多のリレーションを書く
     public function likes(): BelongsToMany
     {
-       return $this->belongsToMany(Book::class,'likes','user_id','book_id')->withTimestamps();
+       return $this->belongsToMany(Book::class, 'likes', 'user_id', 'book_id')->withTimestamps();
 
     }
 
     //この投稿に対して既にlikeしたかどうかを判別する
     public function isLike($bookId)
     {
-        return $this->likes()->wherePivot('book_id',$bookId)->exists();
+        return $this->likes()->wherePivot('book_id', $bookId)->exists();
     }
 
     //isLikeを使って、既にlikeしたか確認したあと、いいねする（重複させない）
     public function like($bookId)
     {
-    if($this->isLike($bookId)){
-        //もし既に「いいね」していたら何もしない
-        $test = 1;
-    } else {
-        $this->likes()->attach($bookId);
-        $test = 2;
-    }
+        if($this->isLike($bookId)){
+            //もし既に「いいね」していたら解除
+            $this->likes()->detach($bookId);
+            return false;
+        } else {
+            $this->likes()->attach($bookId);
+            return true;
+        }
     }
 
-    //isLikeを使って、既にlikeしたか確認して、もししていたら解除する
-    public function unlike($bookId)
+    //多対多のリレーションを書く
+    public function hates(): BelongsToMany
     {
-    if($this->isLike($bookId)){
-        //もし既に「いいね」していたら消す
-        $this->likes()->detach($bookId);
-    } else {
+       return $this->belongsToMany(Book::class, 'hates', 'user_id', 'book_id')->withTimestamps();
+
     }
+
+    //この投稿に対して既にhateしたかどうかを判別する
+    public function isHate($bookId)
+    {
+        return $this->hates()->wherePivot('book_id', $bookId)->exists();
+    }
+
+    //isHateを使って、既にhateしたか確認したあと、きらいする（重複させない）
+    public function hate($bookId)
+    {
+        if($this->isHate($bookId)){
+            $this->hates()->detach($bookId);
+            return false;
+        } else {
+            $this->hates()->attach($bookId);
+            return true;
+        }
     }
 
     public function sendPasswordResetNotification($token){

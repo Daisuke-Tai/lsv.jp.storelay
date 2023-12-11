@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Like;
+use App\Models\Hate;
+use Illuminate\Support\Facades\Auth;
 
 class Book extends Model
 {
@@ -17,7 +19,24 @@ class Book extends Model
         return $this->hasMany(Like::class);
     }
 
-//    use HasFactory;
+    // indexでexistsを取ってくるとき用
+    public function isLike()
+    {
+        return $this->likes()->where('user_id', Auth::user()->id);
+    }
+
+    public function hates()
+    {
+        return $this->hasMany(Hate::class);
+    }
+
+    // indexでexistsを取ってくるとき用
+    public function isHate()
+    {
+        return $this->hates()->where('user_id', Auth::user()->id);
+    }
+
+    //    use HasFactory;
     const STATUS = [
         1 => ['label' => '未着手', 'class' => 'label-danger'],
         2 => ['label' => '着手中', 'class' => 'label-info'],

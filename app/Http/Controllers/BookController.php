@@ -28,7 +28,8 @@ class BookController extends Controller
         $current_kind = Kind::find($kind_id);
 
         // 選択されたフォルダに紐づくタスクを取得
-        $books = Book::withCount('likes')
+        $books = Book::withCount('likes')->withExists('isLike')
+                     ->withCount('hates')->withExists('isHate')
                      ->where('kind_id', $current_kind->id)->latest('id')->get();
 
         // クエリビルダで取得するとModelが意味をなさなくなり

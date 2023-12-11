@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import InputModal from '@/Components/InputModal';
+import LikeButton from '@/Components/LikeButton';
 import Tuzuki from '@/Components/Tuzuki';
 import React from 'react';
 
@@ -11,7 +12,7 @@ export default function Index({ auth,kinds,current_kind_id,books }) {
     const [show3, setShow3] = useState(0);
     const [atag, setAtag] = useState(false);
     
-    const like = (id) => {
+    const like1 = (id) => {
       
       // laravelのエンドポイント
       const apiUrl = 'http://localhost/lsv.jp.storelay/public/index.php/like/' + id;
@@ -101,15 +102,19 @@ export default function Index({ auth,kinds,current_kind_id,books }) {
                             </div>
                           </a> 
       
-                          <div className="grid gap-4 grid-cols-3 absolute bottom-0">
+                          <div className="grid gap-4 grid-cols-4 absolute bottom-0">
 
                             <input id="b_relay"  type="checkbox" className="hidden"></input> 
                             <label for="b_relay" onClick={() => { setShow3(book.id); setAtag(true);}} className="mb-1 px-2 rounded border border-current text-sm font-medium text-indigo-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">{book.user_id}:relay:{book.id}</label>                                  
                             { (show3 == book.id) &&
                               <InputModal type={3} show={show3} setShow={setShow3} setAtag={setAtag} id={book.id}/>  }
                            
+                            <LikeButton type={1} id="b_like1" book={book} />
+                            <LikeButton type={2} id="b_hate1" book={book} />
+{/*                            
                             <input id="b_like"  type="checkbox" className="hidden"></input> 
-                            <label for="b_like" onClick= {() => like(book.id)} className="mb-1 px-2 rounded border border-current text-sm font-medium text-green-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">いいね:{book.likes_count}</label>
+                            <label for="b_like" onClick= {() => like1(book.id)} className="mb-1 px-2 rounded border border-current text-sm font-medium text-green-600 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:text-green-500">いいね:{book.likes_count}:{book.is_like_exists ? 'o':'x'}</label>
+*/} 
                          </div>                       
                         </div>
                       ))}
